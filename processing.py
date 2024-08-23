@@ -142,8 +142,11 @@ def get_image_descriptions_batched(image_objects, batch_size=5):
 
     # Split image_objects into batches
     num_batches = ceil(len(image_objects) / batch_size)
+    print("Number of batches :",num_batches,"Len of image objects :",len(image_objects))
     for i in range(num_batches):
         batch = image_objects[i * batch_size:(i + 1) * batch_size]
+        print("Batch :",batch)
+        print("Len of batch :",len(batch))
         images = []
         for image_obj in batch:
             base64_image = encode_image(image_obj.get("image_path"))
