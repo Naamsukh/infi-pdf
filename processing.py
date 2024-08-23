@@ -45,19 +45,24 @@ def create_documents(chunks):
         text = chunk.get("text")
         metadata = chunk.get("metadata")
         if chunk.get("type") == "Image":
-            text = get_image_description(metadata.get("image_path"))
+            try:
+                text = get_image_description(metadata.get("image_path"))
+            except Exception as e:
+                print("Error getting image description",e)
         if chunk.get("type") == "Table":
-            text = call_openai_api(table_prompt_template.format(table_html=metadata.get("text_as_html")),DEFAULT_SYSTEM_PROMPT)
+            try:
+                text = call_openai_api(table_prompt_template.format(table_html=metadata.get("text_as_html")),DEFAULT_SYSTEM_PROMPT)
+            except Exception as e:
+                print("Error getting table description",e)
         metadata = {
             "filename":metadata.get("filename"),
             "page_number":metadata.get("page_number"),
             "type": chunk.get("type"),
         }
-        print("Text :",text)
         doc = Document(doc_id=str(idx),text=text, metadata=metadata)
         docs.append(doc)
 
-    delete_all_files_in_folder("image_blocks")
+    delete_all_files_in_folder(folder_path="image_blocks")
     return docs
 
 def get_image_description(image_path):

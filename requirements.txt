@@ -9,4 +9,4 @@ chromadb==0.5.5
 llama-index-vector-stores-chroma==0.1.9
 llama-index==0.10.44
 llama-index-core==0.10.44
-pysqlite3-binary
+# pysqlite3-binary

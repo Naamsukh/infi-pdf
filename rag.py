@@ -4,10 +4,13 @@ import time
 import chromadb
 from llama_index.core import StorageContext,VectorStoreIndex,ServiceContext,Document
 
+from unstructured.partition.pdf import partition_pdf
 from custom_query_engine import RAGStringQueryEngine
 from llama_index.vector_stores.chroma import ChromaVectorStore
 from llama_index.embeddings.openai import OpenAIEmbedding
 from dotenv import load_dotenv
+
+from processing import chunk_elements, create_documents
 
 load_dotenv()
 
@@ -57,3 +60,26 @@ def generate_documents_from_chunks(chunks):
         documents.append(document)
     
     return documents
+
+def create_pdf_retrieval_chain(file):
+    start_time = time.time()
+    docs = []
+
+    print("File :",file)
+    print("Partioning..")
+    elements = partition_pdf(file=file,strategy="hi_res",infer_table_structure=True,extract_images_in_pdf=True,extract_image_block_output_dir="image_blocks")
+
+    elements_list = [element.to_dict() for element in elements]
+    
+    print("chunking..")
+    chunks = chunk_elements(elements_list)
+
+    documents = create_documents(chunks)
+    docs.extend(documents)
+    
+
+    query_engine = get_query_engine_from_documents(docs, top_k=10)
+
+    end_time = time.time()
+    print(f"Time taken to create retrieval chain: {end_time - start_time:.2f} seconds")
+    return query_engine
