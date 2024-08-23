@@ -34,7 +34,6 @@ def main():
 
         prompt = st.chat_input("How can I help you?", key="chat_input")
         if prompt:
-            print("prompt: ", prompt)
             with st.chat_message("user"):
                 st.markdown(prompt)
             st.session_state.messages.append({"role": "user", "content": prompt})
