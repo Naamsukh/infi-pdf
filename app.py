@@ -71,7 +71,6 @@ def main():
                     st.markdown(answer)
     except Exception as e:
         print("Error occured :",e)
-        st.write("Exception occured :",e)
         raise e
 
 if __name__ == "__main__":
