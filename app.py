@@ -2,7 +2,7 @@ __import__('pysqlite3')
 import sys
 sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
-
+import logging
 import streamlit as st
 import os
 from constants import DEFAULT_SYSTEM_PROMPT, GENERAL_RAG_PROMPT
@@ -18,7 +18,7 @@ OPENAI_API_TOKEN = os.getenv('OPENAI_API_KEY')
 
 def main():
     try:
-        print("Starting the Infi PDF AI app...")
+        logging.info("Starting the Infi PDF AI app...")
         st.title("Infi PDF AI")
 
         # Streamlit sidebar for file upload and processing
