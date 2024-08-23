@@ -45,7 +45,6 @@ def main():
                 context_str = "\n\n".join([chunk.get("content") for chunk in chunks])
                 
                 prompt = GENERAL_RAG_PROMPT.format(question=prompt, context=context_str)
-                print("prompt: ", prompt)
                 response = call_openai_api(prompt, DEFAULT_SYSTEM_PROMPT, model="gpt-4o")
                 
 
