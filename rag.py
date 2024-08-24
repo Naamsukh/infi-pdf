@@ -70,7 +70,7 @@ def create_pdf_retrieval_chain(file):
     docs.extend(documents)
     
 
-    query_engine = get_query_engine_from_documents(docs, top_k=10)
+    query_engine = get_query_engine_from_documents(docs, top_k=15)
 
     end_time = time.time()
     print(f"Time taken to create retrieval chain: {end_time - start_time:.2f} seconds")
