@@ -2,6 +2,7 @@ __import__('pysqlite3')
 import sys
 sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
+import asyncio
 import logging
 import streamlit as st
 import os
@@ -16,13 +17,13 @@ load_dotenv()
 OPENAI_API_TOKEN = os.getenv('OPENAI_API_KEY')
 
 
-def main():
+async def main():
     try:
         logging.info("Starting the Infi PDF AI app...")
         st.title("Infi PDF AI")
 
         # Streamlit sidebar for file upload and processing
-        configure_sidebar()
+        await configure_sidebar()
 
         # Main area for chat interface
         if "messages" not in st.session_state:
@@ -34,6 +35,7 @@ def main():
 
         prompt = st.chat_input("How can I help you?", key="chat_input")
         if prompt:
+            print("prompt: ", prompt)
             with st.chat_message("user"):
                 st.markdown(prompt)
             st.session_state.messages.append({"role": "user", "content": prompt})
@@ -68,8 +70,8 @@ def main():
                 with st.chat_message("assistant"):
                     st.markdown(answer)
     except Exception as e:
-        print("Error occured :",e)
+        logging.error("Error occured :",e)
         raise e
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())

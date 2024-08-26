@@ -19,7 +19,7 @@ chroma_collection = chroma_client.get_or_create_collection("chatbot-1")
 
 api_key =  os.getenv("OPENAI_API_KEY")
 
-def get_query_engine_from_documents(documents, top_k=12):
+def get_query_engine_from_documents(documents, top_k=20):
     """ 
     Generate retriever from text
 
@@ -50,7 +50,7 @@ def get_query_engine_from_documents(documents, top_k=12):
     return query_engine
 
 
-def create_pdf_retrieval_chain(file):
+async def create_pdf_retrieval_chain(file):
     start_time = time.time()
     docs = []
 
@@ -66,7 +66,7 @@ def create_pdf_retrieval_chain(file):
     print("chunking..")
     chunks = chunk_elements(elements_list,filename)
 
-    documents = create_documents(chunks)
+    documents = await create_documents(chunks)
     docs.extend(documents)
     
 
