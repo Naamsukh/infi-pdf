@@ -83,7 +83,7 @@ def create_ppt_demo(json_data, slide_width_inch=13.33, slide_height_inch=7.5):
                 shape.text_frame.text = "TP"
             elif element_type == 'Image':
                 # Add the image to the slide
-                image_path = element['metadata'].get('image_paths')
+                image_path = element['metadata'].get('image_path')
                 if image_path and os.path.exists(image_path):
                     slide.shapes.add_picture(image_path, Inches(left_inch), Inches(top_inch),
                                              Inches(width_inch), Inches(height_inch))
