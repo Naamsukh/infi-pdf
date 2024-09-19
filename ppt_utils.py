@@ -119,7 +119,7 @@ def create_ppt_demo(json_data, slide_width_inch=13.33, slide_height_inch=7.5):
 
 def fit_text_in_box(text_frame, width_inch, height_inch):
     max_font_size = 36
-    min_font_size = 8
+    min_font_size = 6
 
     for font_size in range(max_font_size, min_font_size - 1, -1):
         for paragraph in text_frame.paragraphs:
@@ -131,6 +131,6 @@ def fit_text_in_box(text_frame, width_inch, height_inch):
         approx_text_width = len(text_frame.text) * 0.6 * (font_size / 72)
 
         if approx_text_height <= height_inch and approx_text_width <= width_inch:
-            return font_size
+            return font_size - 1 
 
     return min_font_size
