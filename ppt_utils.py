@@ -1,9 +1,11 @@
-from overlap_utils import adjust_overlapping_objects_in_ppt, find_unique_overlapping_and_non_overlapping_objects
+import os
+from io import BytesIO
+
 from pptx.util import Inches, Pt
 from pptx import Presentation
 from pptx.dml.color import RGBColor
-import os
-from io import BytesIO
+
+from overlap_utils import adjust_overlapping_objects_in_ppt, find_unique_overlapping_and_non_overlapping_objects
 
 def organize_data_by_page(json_data):
     # Group data by page number
@@ -119,7 +121,7 @@ def create_ppt_demo(json_data, slide_width_inch=13.33, slide_height_inch=7.5):
 
 def fit_text_in_box(text_frame, width_inch, height_inch):
     max_font_size = 36
-    min_font_size = 6
+    min_font_size = 7
 
     for font_size in range(max_font_size, min_font_size - 1, -1):
         for paragraph in text_frame.paragraphs:
@@ -131,6 +133,6 @@ def fit_text_in_box(text_frame, width_inch, height_inch):
         approx_text_width = len(text_frame.text) * 0.6 * (font_size / 72)
 
         if approx_text_height <= height_inch and approx_text_width <= width_inch:
-            return font_size - 1 
+            return font_size - 1
 
     return min_font_size
