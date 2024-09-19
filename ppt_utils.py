@@ -83,7 +83,7 @@ def create_ppt_demo(json_data, slide_width_inch=13.33, slide_height_inch=7.5):
                 shape.text_frame.text = "TP"
             elif element_type == 'Image':
                 # Add the image to the slide
-                image_path = element['metadata'].get('image_path')
+                image_path = element['metadata'].get('image_paths')
                 if image_path and os.path.exists(image_path):
                     slide.shapes.add_picture(image_path, Inches(left_inch), Inches(top_inch),
                                              Inches(width_inch), Inches(height_inch))
@@ -96,7 +96,7 @@ def create_ppt_demo(json_data, slide_width_inch=13.33, slide_height_inch=7.5):
                     )
                     fill = shape.fill
                     fill.solid()
-                    fill.fore_color.rgb = RGBColor(200, 200, 200)  # Light gray color for missing images
+                    fill.fore_color.rgb = RGBColor(192, 192, 192)  # Light gray color for missing images
                     shape.text_frame.text = "IP"
             else:
                 # Add text box for other types (e.g., Title, NarrativeText, ListItem)
