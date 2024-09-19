@@ -1,3 +1,4 @@
+from overlap_utils import adjust_overlapping_objects_in_ppt, find_unique_overlapping_and_non_overlapping_objects
 from pptx.util import Inches, Pt
 from pptx import Presentation
 from pptx.dml.color import RGBColor
@@ -27,11 +28,21 @@ def create_ppt_demo(json_data, slide_width_inch=13.33, slide_height_inch=7.5):
     pages_data = organize_data_by_page(json_data)
 
     for page_data in pages_data:
-
+            
         print("Processing page data",page_data[0]['metadata'].get('page_number', 1))    
+        
+        # Get unique overlap and non overlap elements
+        overlaps,non_overlaps = find_unique_overlapping_and_non_overlapping_objects(page_data)
+        
+        # Adjust the coordinates of the overlapping objects
+        adjusted_overlaps_objects = adjust_overlapping_objects_in_ppt(overlaps)
+
+        # Merge the adjusting overlapping objects and non overlapping objects
+        adjusted_elements = adjusted_overlaps_objects + non_overlaps
+
         # Get layout dimensions from the first element in page_data
-        layout_width_px = page_data[0]['metadata']['coordinates']['layout_width']
-        layout_height_px = page_data[0]['metadata']['coordinates']['layout_height']
+        layout_width_px = adjusted_elements[0]['metadata']['coordinates']['layout_width']
+        layout_height_px = adjusted_elements[0]['metadata']['coordinates']['layout_height']
 
         # Calculate pixel to inch conversion factors
         px_to_inch_x = slide_width_inch / layout_width_px
@@ -41,7 +52,7 @@ def create_ppt_demo(json_data, slide_width_inch=13.33, slide_height_inch=7.5):
         slide_layout = prs.slide_layouts[6]  # Blank layout
         slide = prs.slides.add_slide(slide_layout)
 
-        for element in page_data:
+        for element in adjusted_elements:
             text = element['text']
             element_type = element['type']
             coordinates = element['metadata']['coordinates']['points']
